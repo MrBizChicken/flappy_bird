@@ -41,6 +41,10 @@ def main():
                 if event.key == pygame.K_q:
                     pygame.quit()
 
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_SPACE:
+                    bird.flap()                   
+
         draw()
         update()
 
