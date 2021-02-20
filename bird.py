@@ -9,29 +9,35 @@ class Bird(pygame.sprite.Sprite):
         self.height = 64
         self.x = GAME_WIDTH // 2 - self.width * 2
         self.y = 350
-        self.speed = 5
+        self.lift = -20
         self.image = pygame.Surface([self.width, self.height])
         self.image.fill((255, 0, 0))
         self.rect = self.image.get_rect()
         self.rect.topleft = (self.x, self.y)
+        self.grav = 0.6
+        self.vel = 0
+        self.max_vel = -10
+        self.started = False
 
 
 
     def update(self):
-        self.key_input()
+        if self.started:
+
+            self.vel += self.grav
+            self.rect.y += self.vel
+
+        if self.vel < self.max_vel:
+            self.vel = self.max_vel
+
+        # if self.rect.top < GAME_HEIGHT:
+        #     self.rect = self.rect.move(0, self.grav)
 
 
 
+    def flap(self):
+        if self.started == False:
+            self.started = True
 
-    def key_input(self):
-
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_DOWN]:
-
-            if self.rect.bottom > 0:
-                self.rect.y += self.speed
-
-        if keys[pygame.K_UP]:
-            if self.rect.top < GAME_HEIGHT:
-                self.rect.y += -self.speed
+        if self.started:
+            self.vel += self.lift
