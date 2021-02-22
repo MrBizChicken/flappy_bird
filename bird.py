@@ -23,7 +23,7 @@ class Bird(pygame.sprite.Sprite):
 
 
     def update(self, pipes_group):
-        # self.collide(pipes_group)
+        self.collide(pipes_group)
         self.gravity()
 
     def gravity(self):
