@@ -10,8 +10,9 @@ class Top_pipe(pygame.sprite.Sprite):
         self.y = self.get_new_y()
         self.height = self.y
         self.x = x
+        self.orignal_x = x
 
-        self.speed = 10
+        self.speed = 5
         self.image = pygame.image.load("pipe_top.png")
 
         self.rect = self.image.get_rect()
@@ -29,11 +30,18 @@ class Top_pipe(pygame.sprite.Sprite):
 
         # Pipe passes left side of screen
         if self.rect.right <= 0:
-            self.reset()
-
-
+            self.reset_pipe()
 
     def reset(self):
+        new_y = self.get_new_y()
+        self.rect.left = self.orignal_x
+        self.rect.bottom = new_y
+
+        for p in self.pg:
+            if  type(p) == Bottom_pipe and p.rect.x == self.rect.x:
+                p.rect.top = new_y + p.gap
+
+    def reset_pipe(self):
         new_y = self.get_new_y()
         self.rect.left = GAME_WIDTH  + GAME_WIDTH // 3
         self.rect.bottom = new_y
@@ -41,6 +49,9 @@ class Top_pipe(pygame.sprite.Sprite):
         for p in self.pg:
             if  type(p) == Bottom_pipe and p.rect.x == self.rect.x:
                 p.rect.top = new_y + p.gap
+
+            if p == 2:
+                self.move(0, self.speed)
 
     def get_new_y(self):
         min_from_top = 50

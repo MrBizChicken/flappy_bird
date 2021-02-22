@@ -2,6 +2,8 @@ from constants import *
 import pygame, random
 import bird
 import pipe
+import cloud
+
 pygame.init()
 
 clock = pygame.time.Clock()
@@ -12,14 +14,20 @@ pygame.init()
 
 bird_group = pygame.sprite.Group()
 pipes_group = pygame.sprite.Group()
-
+cloud_group = pygame.sprite.Group()
+amount_of_clouds = 1
 
 
 
 bird = bird.Bird()
 
 
+
 bird_group.add(bird)
+
+for i in range(amount_of_clouds):
+
+    cloud_group.add(cloud.Cloud())
 
 
 pipes_group.add(pipe.Top_pipe(GAME_WIDTH, pipes_group))
@@ -69,6 +77,7 @@ def draw():
     surface.fill((200, 200, 200))
     bird_group.draw(surface)
     pipes_group.draw(surface)
+    cloud_group.draw(surface)
 
 
 
@@ -78,6 +87,7 @@ def draw():
 def update():
     bird_group.update(pipes_group)
     pipes_group.update()
+    cloud_group.update()
 
 
 
