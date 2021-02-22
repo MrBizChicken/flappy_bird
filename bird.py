@@ -2,6 +2,7 @@ import pygame, random
 from constants import *
 import random
 pygame.init()
+
 class Bird(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -10,8 +11,7 @@ class Bird(pygame.sprite.Sprite):
         self.x = GAME_WIDTH // 2 - self.width * 2
         self.y = 350
         self.lift = -20
-        self.image = pygame.Surface([self.width, self.height])
-        self.image.fill((255, 0, 0))
+        self.image = pygame.image.load("bird.png")
         self.rect = self.image.get_rect()
         self.rect.topleft = (self.x, self.y)
         self.grav = 0.6
@@ -21,7 +21,12 @@ class Bird(pygame.sprite.Sprite):
 
 
 
-    def update(self):
+
+    def update(self, pipes_group):
+        # self.collide(pipes_group)
+        self.gravity()
+
+    def gravity(self):
         if self.started:
 
             self.vel += self.grav
@@ -30,10 +35,14 @@ class Bird(pygame.sprite.Sprite):
         if self.vel < self.max_vel:
             self.vel = self.max_vel
 
-        # if self.rect.top < GAME_HEIGHT:
-        #     self.rect = self.rect.move(0, self.grav)
+    def collide(self, pipes_group):
+        if pygame.sprite.spritecollide(self, pipes_group, False):
+            self.rect.x = GAME_WIDTH // 2 - self.width * 2
+            self.rect.y = 350
+            self.started = False
+            for p in pipes_group:
 
-
+                p.reset()
 
     def flap(self):
         if self.started == False:

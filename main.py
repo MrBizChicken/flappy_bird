@@ -1,5 +1,5 @@
 from constants import *
-import pygame
+import pygame, random
 import bird
 import pipe
 pygame.init()
@@ -11,15 +11,27 @@ surface = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
 pygame.init()
 
 bird_group = pygame.sprite.Group()
-pipe_group = pygame.sprite.Group()
+pipes_group = pygame.sprite.Group()
 
 
-pipe = pipe.Pipe()
+
+
 bird = bird.Bird()
 
 
 bird_group.add(bird)
-pipe_group.add(pipe)
+
+
+pipes_group.add(pipe.Top_pipe(GAME_WIDTH, pipes_group))
+pipes_group.add(pipe.Top_pipe(GAME_WIDTH + GAME_WIDTH // 2, pipes_group))
+pipes_group.add(pipe.Top_pipe(GAME_WIDTH * 2, pipes_group))
+
+
+
+
+
+
+
 
 
 
@@ -43,7 +55,7 @@ def main():
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
-                    bird.flap()                   
+                    bird.flap()
 
         draw()
         update()
@@ -54,9 +66,9 @@ def main():
 
 
 def draw():
-    surface.fill((0, 0, 0))
+    surface.fill((200, 200, 200))
     bird_group.draw(surface)
-    pipe_group.draw(surface)
+    pipes_group.draw(surface)
 
 
 
@@ -64,8 +76,8 @@ def draw():
 
 
 def update():
-    bird_group.update()
-    pipe_group.update()
+    bird_group.update(pipes_group)
+    pipes_group.update()
 
 
 
